@@ -1,135 +1,135 @@
 # Harness Card V3
 
-**AI chat circuit breaker for drifting, looping, overexplaining, or ungrounded conversations.**
+**A local-first AI chat circuit breaker for repairing conversations that drift, loop, lose constraints, overexplain, restart, or become ungrounded.**
 
-> **Easy upload package note:** This GitHub upload package avoids hidden dot-files and dot-folders. The app, docs, disclaimer, privacy policy, security policy, data, and roadmap are included. Optional GitHub issue-template and gitignore reference files are provided as visible files for later setup.
+Harness Card is used after a human–AI conversation has already begun to fail. It helps the user choose the lightest repair that can restore the conversation without discarding useful state.
 
-Harness Card V3 is a local-first AI conversation repair prototype. It generates structured reset cards that help users recover failing AI chats across any system that accepts text prompts.
+- **Direct Correction** fixes a tiny, obvious mistake.
+- **Mini Harness** restores an output boundary such as “code only” or “no explanation.”
+- **Full Harness** reconstructs shared reality when constraints, trust, continuity, or project state have broken.
 
-The public name is still under review. Current public-language candidates include **Harness Card V3**, **Context Harness Card**, **Context Repair Card**, and **AI Chat Circuit Breaker**. Do not treat any public rename as final until naming collisions and search results have been reviewed with real sources.
+The cargo is Human Signal. The card exists to keep it from breaking during a handoff.
 
-Prompt engineering helps you ask better at the beginning.
+## Run it
 
-Harness Card V3 helps you recover when the conversation starts losing the plot in the middle.
+The app loads its public Dataset A records from JSON, so serve the repository instead of opening `index.html` through `file://`:
 
-No account. No API key. No backend. No analytics. No cloud storage required.
-
-## Open the app
-
-Open:
-
-```text
-index.html
+```bash
+npm run serve
 ```
 
-in a browser.
+Then open `http://localhost:8080`. The same static files are compatible with GitHub Pages.
 
-## Current Status
+No account, backend, API key, analytics, telemetry, or cloud transcript storage is required.
 
-This is an early local-first prototype with seeded test evidence.
+## Current release
 
-Early cross-model batch testing suggests Full Harness Cards outperform weak baseline corrections on layered context failures such as lost constraints, drift, restart loops, fake certainty, and trust/handoff problems.
+**3.5.2 — Public Credibility and Reliability Pass**
 
-For simple output-format failures such as “code only” or “no explanation,” Mini Harness or Direct Correction may be better unless the model keeps failing after correction.
+The repository remains static HTML, CSS, and JavaScript. That keeps it inspectable, portable, inexpensive, dependency-light, and low in attack surface.
 
-This project does not claim proof, universal effectiveness, novelty, naming clearance, trademark clearance, or that no adjacent products exist. Competitive intelligence, academic claims, SEO claims, and naming claims must be sourced before they appear in public materials. Use `docs/AI_REPORT_AUDIT_CHECKLIST.md` before accepting AI-generated research as project direction. See `DISCLAIMER.md` for the full early-prototype, non-affiliation, trademark, privacy, and no-warranty disclaimer.
+## What the application now does
 
-## Product Modes
+- Analyzes a failure window locally and recommends Direct, Mini, or Full.
+- Displays the heuristic’s reasons, detected signals, token estimate, and confidence.
+- Generates copyable repair cards manually or from the analyzer.
+- Keeps the thirty seeded Dataset A records separate from working records.
+- Adds, edits, duplicates, reviews, and deletes local records.
+- Shows browser-storage status and separates save, clear, and reset actions.
+- Exports versioned JSON and CSV.
+- Validates JSON imports with size and record-count limits.
+- Requires an explicit choice between merge and replace.
 
-### Full Harness
+The analyzer is a deterministic heuristic, **not AI diagnosis**. Human judgment remains final.
 
-For layered context failures: drift, lost constraints, restart loops, fake certainty, source/trust confusion, and handoff failures.
+## What this repository is
 
-### Mini Harness
+This repository has four bounded roles:
 
-For output-discipline failures: code-only, no explanation, shorter, just answer, wrong format, no intro/no outro.
+1. A working public conversation-repair tool.
+2. A local evidence instrument for sanitized recovery outcomes.
+3. A research artifact that preserves failures, limitations, contradictions, and version history.
+4. A feeder into a larger Human Signal continuity investigation after human review.
 
-### Direct Correction
+It is not the entire core system, a cloud platform, an autonomous research authority, or proof that the method always works.
 
-For obvious one-sentence fixes.
+## Evidence boundary
 
-Use the lightest correction that can fix the failure.
+### Dataset A — exploratory forced-failure simulations
 
-## Parser / Auto-Log Feature
+The repository contains 30 seeded records:
 
-The app includes a **Clipboard Parser & Token Scrubber**.
+- Harness preferred: 25
+- Mixed / close: 2
+- Baseline preferred: 3
 
-It can:
+These records are useful design evidence, not proof. The failures were forced; scenarios repeat; the baseline was deliberately simple; evaluations were model-generated and non-independent; and evaluator bias is possible.
 
-- accept pasted raw AI output or transcript fragments
-- estimate token weight locally
-- recommend Full/Mini/Direct
-- generate a repair card
-- fill the card generator
-- preview rough test records from labeled batch output
-- import preview records into the local dashboard
+Dataset A remains a separate reference dataset. Local and imported records do not silently alter its published metrics.
 
-Parser output requires human review before it should be treated as evidence.
+### Dataset B — real conversation recovery tests
 
-## Seeded Evidence
+The next evidence stage uses naturally occurring failures, frozen sanitized context, stronger baselines, human scoring, persistence checks, handoff results, and explicit privacy review. See [`docs/DATASET_B_PROTOCOL.md`](docs/DATASET_B_PROTOCOL.md).
 
-This repo includes sanitized seed data from early cross-model batch testing.
+The research question is:
 
-Current public seed summary:
+> Which repair weight works best for which failure class?
 
-- Total records: **30**
-- Harness preferred: **25**
-- Mixed / close: **2**
-- Baseline preferred: **3**
+Negative results remain evidence.
 
-## Files
+## Privacy and storage
 
-```text
-index.html                         Main app
-data/seed-data.json                 Sanitized seed data
-data/seed-data.csv                  Sanitized seed data CSV
-docs/HARNESS_WEIGHT_RULE.md         Correction weight rule
-docs/PROMPT_KIT.md                  Copy/paste prompt templates
-docs/TEST_PROTOCOL.md               Testing protocol
-docs/POSITIONING_AND_NAMING.md      Name/status boundary
-docs/PARSER_AND_AUTO_LOG.md         Parser feature notes
-docs/RESEARCH_TRIAGE.md             Quarantined/verified research claims
-docs/AI_REPORT_AUDIT_CHECKLIST.md     Checklist for filtering AI-generated research
-SECURITY.md                         Safety notes
-PRIVACY.md                          Privacy notes
-DISCLAIMER.md                       Early prototype, non-affiliation, trademark, privacy, and no-warranty disclaimer
+The app does not automatically upload conversations or usage data. Working records may be saved in browser `localStorage`. Exported files leave the app only when the user chooses to download, copy, or share them.
+
+Do not paste passwords, API keys, private legal or medical data, confidential information, or anything you do not want stored on the device. Prefer sanitized outcomes over raw conversations.
+
+See [`PRIVACY.md`](PRIVACY.md) and [`SECURITY.md`](SECURITY.md).
+
+## Validation
+
+```bash
+npm test
+npm run validate
 ```
 
+Validation checks:
 
-## Feedback and Test Reports
+- Direct/Mini/Full parser regression cases;
+- JavaScript syntax;
+- release and schema boundaries;
+- required public files and application references;
+- seed-data shape and unique IDs;
+- preservation of the thirty-record Dataset A boundary;
+- import-size, import-count, storage, and evidence-separation safeguards.
 
-Harness Card V3 does not collect usage data automatically.
+## Main files
 
-The project measures repair outcomes, not personal conversations. Users may voluntarily submit sanitized test reports through GitHub Issues or by exporting local records. Raw transcripts are not required and should not be submitted unless private information has been removed and the user knowingly chooses to share them.
+- `index.html` — accessible static application shell
+- `styles.css` — responsive interface styles
+- `app.js` — local storage, records, import/export, and interface behavior
+- `src/parser-heuristic.js` — testable repair-weight heuristic
+- `tests/parser-heuristic.test.js` — Direct/Mini/Full regression tests
+- `data/seed-data.json` and `.csv` — Dataset A records
+- `docs/DATASET_B_PROTOCOL.md` — real-world recovery protocol
+- `docs/EXPORT_SCHEMA.md` — versioned export contract
+- `CHANGELOG.md` — release history
+- `CONTRIBUTING.md` — architecture, privacy, and evidence boundaries
 
-Useful test reports include:
+## What is deliberately not being built
 
-- AI platform used
-- failure type
-- card used
-- parser recommendation
-- outcome
-- optional rating
-- optional sanitized note
+No accounts, cloud storage, payments, subscriptions, external AI APIs, transcript collection, analytics, telemetry, tracking, framework rewrite, browser extension, enterprise dashboard, mobile app, or multi-agent orchestration.
 
-See `docs/FEEDBACK_AND_EVIDENCE_COLLECTION.md` and `GITHUB_ISSUE_TEMPLATE_test-report.yml (visible reference file; optional later GitHub path is .github/ISSUE_TEMPLATE/test-report.yml)`.
+## Trust rule
 
-## Disclaimer
+Keep these distinctions visible:
 
-Harness Card V3 is an early-stage experimental prototype and working project/build name. Public naming and branding are still under review and may change in a future version.
+- source is not interpretation;
+- observation is not a finding;
+- a pattern is not proof;
+- a candidate is not Canon;
+- repetition is not verification;
+- confidence is not certainty;
+- AI judgment is advisory;
+- human review remains authoritative.
 
-This project is not affiliated with, endorsed by, sponsored by, or officially connected to any AI platform, model provider, software vendor, hardware manufacturer, or third-party product mentioned in this repository. Any third-party names or trademarks belong to their respective owners and are used only for identification, comparison, research, compatibility discussion, or descriptive purposes.
-
-See [DISCLAIMER.md](DISCLAIMER.md) for the full disclaimer.
-
-## Strong Public Framing For Now
-
-Use this until the naming review is finished:
-
-> Harness Card V3 is a local-first AI chat circuit breaker for recovering drifting, looping, overexplaining, or ungrounded conversations.
-
-## What Not To Build Yet
-
-Do not build SaaS, accounts, payments, cloud sync, custom LLM runners, automated API logging, multi-agent orchestration, or user tracking yet.
-
-The next valuable work is improving the clipboard parser, auditing future AI research reports, and collecting better real-world failure evidence.
+Harness Card should make failure easier to repair without pretending the repair has been proven universally effective.
