@@ -1,69 +1,62 @@
 # Security Policy
 
-Harness Card V3 is a static local-first app.
+Harness Card V3 is a static, local-first browser application. Its security model depends on keeping the architecture small, making storage visible, and refusing unnecessary data collection.
 
-## No backend
+## Supported version
 
-This project does not require:
+Security fixes are applied to the current `3.5.x` release line. Reports should identify the exact app version, browser, operating system, and reproduction steps.
 
-- server
-- database
-- API key
-- login
-- cloud storage
-- analytics
+## Architecture boundary
 
-Everything runs in the browser.
+The project requires no backend, database, account, API key, analytics service, external AI call, or automatic telemetry. Application code and seeded evidence are inspectable in the public repository.
 
-## What not to commit
+This reduces attack surface; it does not make the app risk-free. Browser extensions, shared devices, malicious imported files, copied exports, and modified forks can still expose data.
 
-Do not commit private or sensitive data, including:
+## Local storage
 
-- API keys
-- `.env` files
-- private AI transcripts
-- personal legal, medical, financial, or family information
-- emails
-- phone numbers
-- addresses
-- usernames/handles unless intentionally public
-- screenshots with private UI
-- browser exports containing personal conversations
-- raw logs from ChatGPT, Claude, Gemini, Copilot, Perplexity, z.ai, or local models
+Records saved by the user may remain in browser `localStorage`. Users should be able to see that storage is active, export records before clearing, clear saved browser data, and reset separately to the public seed dataset.
 
-## Safe data practice
+Clearing browser storage is destructive. Resetting to seed records is a different action and must not be presented as equivalent.
 
-Before publishing data:
+## Import boundary
 
-1. Remove names, emails, handles, and local file paths.
-2. Replace private transcripts with summaries.
-3. Keep model/source labels separate from user identity.
-4. Do not publish anything you would not want indexed by search engines.
+JSON imports are untrusted input. Import handling should:
 
-## Reporting security issues
+- reject malformed JSON;
+- require an array of record objects;
+- validate required fields and supported schema versions;
+- bound file size and record count;
+- avoid executing imported text as HTML or JavaScript;
+- offer merge and replace as explicit separate choices;
+- preserve the original Dataset A metrics rather than silently reclassifying imports as seed evidence.
 
-If this becomes a public repo, add your preferred contact method here.
+## Sensitive data
 
-Until then, do not include private contact info in this file.
+Do not paste, import, commit, attach, or publish:
 
+- passwords, API keys, tokens, cookies, or `.env` files;
+- private AI transcripts;
+- confidential legal, medical, financial, employment, or family information;
+- private email addresses, phone numbers, street addresses, usernames, or handles;
+- screenshots containing private browser or account UI;
+- exports that have not been reviewed and sanitized.
 
-## Raw Parser Warning
+Prefer a sanitized outcome record over a raw conversation.
 
-The parser is meant to reduce manual entry. Do not paste private transcripts into a public demo machine. Do not commit raw parsed exports unless they have been reviewed and sanitized.
+## Content rendering
 
+User-controlled and imported text must be rendered as text, not trusted markup. Continue escaping record fields before inserting them into the document. New code must not use `eval`, dynamic script creation from imported values, or unsafe HTML assignment with unsanitized content.
 
-## Public Feedback Safety
+## Dependencies and automation
 
-When submitting issues, discussions, screenshots, exported records, or test reports, do not include secrets or private information.
+The core app should remain dependency-light. GitHub Actions run dependency-free Node validation. Any new third-party dependency requires a specific reason, maintenance assessment, license review, and security review.
 
-Do not submit:
+## Reporting a vulnerability
 
-- API keys
-- passwords
-- tokens
-- private prompts
-- raw sensitive transcripts
-- legal, medical, financial, or personal details
-- private screenshots
+Open a private GitHub security advisory when available. Do not include real secrets or private transcripts in the report. Provide a minimal sanitized reproduction, affected version, impact, and suggested mitigation when known.
 
-Use sanitized summaries whenever possible.
+Public issues may be used for non-sensitive hardening requests only.
+
+## Public evidence safety
+
+Test reports should measure repair outcomes, not expose personal conversations. Anything committed to this repository or submitted through a public issue may be indexed and copied permanently.
