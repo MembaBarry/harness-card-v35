@@ -1,56 +1,56 @@
 # Privacy
 
-Harness Card V3 is local-first.
+Harness Card V3 is local-first by design.
+
+## What the app processes
+
+The app may process text you paste into the card generator or clipboard parser and records you create or import. The current app performs that work in your browser.
 
 ## What the app stores
 
-The app may store test records in browser `localStorage` if you click save.
+When records are saved, they may remain in browser `localStorage` on that device and browser profile. Local storage can persist after the tab closes and may be accessible to other people using the same browser profile.
 
-That data stays in your browser unless you export it or upload the repo somewhere.
+The interface should distinguish:
+
+- **Save locally** — write the current records to this browser;
+- **Export** — create a file or clipboard copy chosen by the user;
+- **Clear saved browser data** — remove locally saved records;
+- **Reset to seed records** — restore the public Dataset A records.
+
+Clear and reset are different actions.
 
 ## What the app sends
 
-The app does not intentionally send data anywhere.
+The project includes no intentional backend upload, account system, analytics, telemetry, external AI request, or cloud transcript storage. The app does not automatically submit usage or conversation data to the project owner.
 
-There is no backend, no analytics, no external API call, and no account system.
+Hosting platforms, browsers, extensions, operating systems, modified forks, and networks may have their own data practices outside this repository’s control.
 
-## Public repo warning
+## Clipboard parser
 
-If you publish this repo publicly, anything inside the repo can become public.
+The parser is a local deterministic heuristic, not AI diagnosis. Pasted text remains in the page unless the user saves, exports, copies, reloads, or otherwise shares it.
 
-Before publishing, inspect:
+Before pasting, remove:
 
-- `data/seed-data.json`
-- `data/seed-data.csv`
-- screenshots
-- docs
-- exported JSON files
-- copied transcripts
+- passwords and API keys;
+- private legal or medical information;
+- confidential business or employment information;
+- account identifiers and personal contact details;
+- anything the user does not want stored on the device.
 
-## Recommended public data style
+Prefer a sanitized failure window and outcome over a complete raw conversation.
 
-Use summaries instead of raw personal transcripts.
+## Imports and exports
 
+Imported JSON is stored locally only after the user chooses to import it. Exported JSON and CSV files are ordinary files: once downloaded, copied, emailed, committed, or uploaded, they are outside the app’s control.
 
-## Clipboard Parser
+Exports should include app and schema versions and preserve evidence origin so seeded, manual, imported, and reviewed-public records cannot be silently conflated.
 
-The Clipboard Parser & Token Scrubber runs entirely in the browser. Pasted text is not sent to any server by this app. If you save or import parsed records, they are stored in localStorage until you export or clear them.
+## Public evidence
 
-## Voluntary Test Reports
+Harness Card measures repair outcomes, not people. Public test reports should contain the least information necessary to evaluate the repair.
 
-Harness Card V3 does not collect usage data automatically.
+Raw transcripts are not required. Public evidence should use sanitized summaries, explicit review status, and a clear statement of limitations. A record marked public-safe means it was reviewed for publication; it does not mean every claim inside it is verified truth.
 
-Users may voluntarily submit sanitized test reports to help improve the product. Test reports should focus on repair outcomes, not personal conversations.
+## Your responsibility
 
-Good test reports may include:
-
-- tool version
-- AI platform used
-- failure type
-- card used
-- parser recommendation
-- outcome
-- optional rating
-- optional sanitized note
-
-Do not submit private, sensitive, legal, medical, financial, personal, proprietary, or confidential information. Raw transcripts are not required and should not be submitted unless they have been sanitized and the user knowingly chooses to share them.
+Review the device, browser profile, imported file, and export destination before using the app with sensitive material. Do not use a shared or public computer for private recovery work unless you understand and clear its storage afterward.
