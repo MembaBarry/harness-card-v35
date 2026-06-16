@@ -1,0 +1,25 @@
+name: Validate static app
+
+on:
+  push:
+    branches: [main, v3.5.2-credibility-reliability-pass]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run parser regression tests
+        run: npm test
+      - name: Validate repository contract
+        run: npm run validate
