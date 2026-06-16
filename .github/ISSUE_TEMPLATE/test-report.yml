@@ -1,0 +1,145 @@
+name: Harness Card Test Report
+description: Share a sanitized report about whether Harness Card V3 helped recover a drifting AI conversation.
+title: "[Test Report]: "
+labels: ["test-report", "feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing Harness Card V3.
+
+        Do not include private, sensitive, legal, medical, financial, personal, proprietary, or confidential information.
+
+        Do not paste raw transcripts unless you have removed private details and are comfortable making them public.
+
+  - type: input
+    id: tool_version
+    attributes:
+      label: Tool version
+      description: Example: 3.5.1. Leave blank if you are not sure.
+      placeholder: "3.5.1"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: ai_platform
+    attributes:
+      label: AI platform used
+      options:
+        - ChatGPT
+        - Claude
+        - Gemini
+        - Copilot
+        - Perplexity
+        - z.ai
+        - Local model
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: failure_type
+    attributes:
+      label: What kind of failure happened?
+      options:
+        - Drift / lost the plot
+        - Lost constraints
+        - Restarted the project
+        - Overexplained / ignored output format
+        - Fake certainty / unsupported claim
+        - Source vs assumption confusion
+        - Handoff failure
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: card_used
+    attributes:
+      label: Which correction did you use?
+      options:
+        - Full Harness
+        - Mini Harness
+        - Direct Correction
+        - Not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: parser_recommendation
+    attributes:
+      label: What did the parser recommend?
+      options:
+        - Full Harness
+        - Mini Harness
+        - Direct Correction
+        - Did not use parser
+        - Not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: followed_recommendation
+    attributes:
+      label: Did you follow the parser recommendation?
+      options:
+        - Yes
+        - No
+        - Did not use parser
+        - Not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: What happened?
+      options:
+        - Helped
+        - Partly helped
+        - Failed
+        - Made it worse
+    validations:
+      required: true
+
+  - type: dropdown
+    id: rating
+    attributes:
+      label: Optional rating
+      description: 5 means it strongly helped. 1 means it failed or made things worse.
+      options:
+        - "5"
+        - "4"
+        - "3"
+        - "2"
+        - "1"
+        - Not sure
+    validations:
+      required: false
+
+  - type: textarea
+    id: sanitized_summary
+    attributes:
+      label: Sanitized summary
+      description: Describe what failed and what the repair card changed. Do not include private data.
+      placeholder: "The AI kept giving a roadmap when I asked for one next step. Mini failed, Full Harness helped..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested_fix
+    attributes:
+      label: What should the tool do better?
+      description: Optional. Parser issue, wording issue, missing failure type, confusing UI, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: privacy_confirm
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: I removed private or sensitive information from this report.
+          required: true
+        - label: I understand GitHub issues in a public repo are public.
+          required: true
