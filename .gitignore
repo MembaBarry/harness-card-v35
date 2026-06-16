@@ -1,0 +1,50 @@
+# Environment / secrets
+.env
+.env.*
+*.env
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.token
+*.secret
+secrets/
+secret/
+credentials/
+credentials.json
+
+# Private transcripts / exports / logs
+raw-transcripts/
+private-transcripts/
+private-data/
+personal/
+screenshots-private/
+chatgpt-export*
+claude-export*
+gemini-export*
+copilot-export*
+perplexity-export*
+*.log
+logs/
+local-exports/
+exports-private/
+
+# Local development
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+.vite/
+.next/
+out/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
