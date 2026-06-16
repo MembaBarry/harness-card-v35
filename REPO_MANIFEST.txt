@@ -1,0 +1,65 @@
+Harness Card V3 repo package
+
+Public name: under review
+Current framing: AI chat circuit breaker
+Internal build: Harness Card V3
+Version: 3.5.1 easy upload
+
+Open index.html locally to use the app.
+
+Version 3.5.0 update: added a dedicated roadmap/ folder for the public-release sequence, GitHub setup, GitHub Pages demo, feedback collection, first public posts, next-build backlog, and go/no-go checklist.
+
+Core safety posture:
+- Early local-first prototype
+- Working name, not final branding
+- No backend
+- No analytics
+- No automatic usage-data collection
+- Voluntary sanitized test reports only
+- Raw transcripts not required
+- Collect repair outcomes, not personal conversations
+
+Root files:
+- index.html
+- README.md
+- DISCLAIMER.md
+- PRIVACY.md
+- SECURITY.md
+- LICENSE
+- package.json
+- .gitignore
+- REPO_MANIFEST.txt
+
+Data:
+- data/seed-data.json
+- data/seed-data.csv
+
+Docs:
+- docs/HARNESS_WEIGHT_RULE.md
+- docs/TEST_PROTOCOL.md
+- docs/PROMPT_KIT.md
+- docs/POSITIONING_AND_NAMING.md
+- docs/PARSER_AND_AUTO_LOG.md
+- docs/RESEARCH_TRIAGE.md
+- docs/AI_REPORT_AUDIT_CHECKLIST.md
+- docs/FEEDBACK_AND_EVIDENCE_COLLECTION.md
+
+GitHub:
+- GITHUB_ISSUE_TEMPLATE_test-report.yml (visible reference file; optional later GitHub path is .github/ISSUE_TEMPLATE/test-report.yml)
+
+Roadmap:
+- roadmap/README.md
+- roadmap/01_PRE_PUBLIC_CHECKLIST.md
+- roadmap/02_GITHUB_SETUP.md
+- roadmap/03_GITHUB_PAGES_DEMO.md
+- roadmap/04_FEEDBACK_COLLECTION.md
+- roadmap/05_FIRST_PUBLIC_POSTS.md
+- roadmap/06_NEXT_BUILD_BACKLOG.md
+- roadmap/07_GO_NO_GO_CHECKLIST.md
+
+Easy-upload visible helper files:
+- READ_ME_FIRST_EASY_UPLOAD.txt
+- GITHUB_ISSUE_TEMPLATE_test-report.yml
+- GITIGNORE_REFERENCE.txt
+
+This package intentionally avoids hidden dot-files/folders for easier GitHub web upload.

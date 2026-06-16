@@ -1,0 +1,58 @@
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.*
+secret.*
+private.*
+credentials.*
+token.*
+api-key.*
+openai_api_key*
+anthropic_api_key*
+gemini_api_key*
+copilot*
+zai*
+
+# Local OS/editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node / build junk if someone expands this later
+node_modules/
+dist/
+build/
+.next/
+.cache/
+coverage/
+
+# Logs
+*.log
+logs/
+
+# Local/private exports
+private-data/
+raw-transcripts/
+raw-exports/
+screenshots-private/
+personal/
+*_private.*
+*_raw_transcript.*
+chatgpt-export*
+claude-export*
+gemini-export*
+copilot-export*
+perplexity-export*
+zai-export*
+
+# Python/cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

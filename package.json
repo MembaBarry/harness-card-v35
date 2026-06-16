@@ -1,0 +1,19 @@
+{
+  "name": "harness-card-v3",
+  "version": "3.5.1",
+  "private": true,
+  "description": "Local-first AI chat circuit breaker for recovering drifting, looping, overexplaining, or ungrounded AI conversations.",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "serve": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "ai",
+    "conversation-repair",
+    "context-engineering",
+    "prompting",
+    "local-first",
+    "circuit-breaker"
+  ],
+  "license": "MIT"
+}
