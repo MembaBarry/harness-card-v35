@@ -2,7 +2,7 @@
 
 **A local-first AI chat circuit breaker for repairing conversations that drift, loop, lose constraints, overexplain, restart, or become ungrounded.**
 
-Harness Card is used after a human–AI conversation has already begun to fail. It helps the user choose the lightest repair that can restore the conversation without discarding the useful state that already exists.
+Harness Card is used after a human–AI conversation has already begun to fail. It helps the user choose the lightest repair that can restore the conversation without discarding useful state.
 
 - **Direct Correction** fixes a tiny, obvious mistake.
 - **Mini Harness** restores an output boundary such as “code only” or “no explanation.”
@@ -12,21 +12,35 @@ The cargo is Human Signal. The card exists to keep it from breaking during a han
 
 ## Run it
 
-Open `index.html` directly in a modern browser, or run:
+The app loads its public Dataset A records from JSON, so serve the repository instead of opening `index.html` through `file://`:
 
 ```bash
 npm run serve
 ```
 
-Then open `http://localhost:8080`.
+Then open `http://localhost:8080`. The same static files are compatible with GitHub Pages.
 
 No account, backend, API key, analytics, telemetry, or cloud transcript storage is required.
 
 ## Current release
 
-The active release line is **3.5.x**. This branch prepares **3.5.2 — Public Credibility and Reliability Pass**.
+**3.5.2 — Public Credibility and Reliability Pass**
 
-The repository is intentionally static HTML, CSS, and JavaScript. That makes it inspectable, portable, inexpensive, GitHub Pages compatible, and low in dependencies and attack surface.
+The repository remains static HTML, CSS, and JavaScript. That keeps it inspectable, portable, inexpensive, dependency-light, and low in attack surface.
+
+## What the application now does
+
+- Analyzes a failure window locally and recommends Direct, Mini, or Full.
+- Displays the heuristic’s reasons, detected signals, token estimate, and confidence.
+- Generates copyable repair cards manually or from the analyzer.
+- Keeps the thirty seeded Dataset A records separate from working records.
+- Adds, edits, duplicates, reviews, and deletes local records.
+- Shows browser-storage status and separates save, clear, and reset actions.
+- Exports versioned JSON and CSV.
+- Validates JSON imports with size and record-count limits.
+- Requires an explicit choice between merge and replace.
+
+The analyzer is a deterministic heuristic, **not AI diagnosis**. Human judgment remains final.
 
 ## What this repository is
 
@@ -38,12 +52,6 @@ This repository has four bounded roles:
 4. A feeder into a larger Human Signal continuity investigation after human review.
 
 It is not the entire core system, a cloud platform, an autonomous research authority, or proof that the method always works.
-
-## Parser boundary
-
-The clipboard parser is a deterministic local heuristic. It is **not AI diagnosis**. It estimates token weight, detects limited text signals, and recommends Direct, Mini, or Full with reasons and a confidence label. The user remains responsible for reviewing the conversation and choosing the repair.
-
-The v3.5.2 heuristic checks Direct before Mini so a short, obvious output-format failure is not swallowed by Mini’s broader threshold.
 
 ## Evidence boundary
 
@@ -57,7 +65,7 @@ The repository contains 30 seeded records:
 
 These records are useful design evidence, not proof. The failures were forced; scenarios repeat; the baseline was deliberately simple; evaluations were model-generated and non-independent; and evaluator bias is possible.
 
-Seeded metrics must remain separate from local manual, imported, and future reviewed-public records.
+Dataset A remains a separate reference dataset. Local and imported records do not silently alter its published metrics.
 
 ### Dataset B — real conversation recovery tests
 
@@ -71,7 +79,7 @@ Negative results remain evidence.
 
 ## Privacy and storage
 
-The app does not automatically upload conversations or usage data. Browser records may be saved in `localStorage`. Exported files leave the app only when the user chooses to download, copy, or share them.
+The app does not automatically upload conversations or usage data. Working records may be saved in browser `localStorage`. Exported files leave the app only when the user chooses to download, copy, or share them.
 
 Do not paste passwords, API keys, private legal or medical data, confidential information, or anything you do not want stored on the device. Prefer sanitized outcomes over raw conversations.
 
@@ -84,17 +92,27 @@ npm test
 npm run validate
 ```
 
-Validation checks the parser regression cases, release version, required public files, seed-data shape, unique record IDs, and preservation of the 30-record Dataset A boundary.
+Validation checks:
 
-## Project files
+- Direct/Mini/Full parser regression cases;
+- JavaScript syntax;
+- release and schema boundaries;
+- required public files and application references;
+- seed-data shape and unique IDs;
+- preservation of the thirty-record Dataset A boundary;
+- import-size, import-count, storage, and evidence-separation safeguards.
 
-- `index.html` — current static browser app
-- `src/parser-heuristic.js` — testable v3.5.2 repair-weight heuristic
+## Main files
+
+- `index.html` — accessible static application shell
+- `styles.css` — responsive interface styles
+- `app.js` — local storage, records, import/export, and interface behavior
+- `src/parser-heuristic.js` — testable repair-weight heuristic
 - `tests/parser-heuristic.test.js` — Direct/Mini/Full regression tests
-- `data/seed-data.json` and `.csv` — Dataset A seed records
+- `data/seed-data.json` and `.csv` — Dataset A records
 - `docs/DATASET_B_PROTOCOL.md` — real-world recovery protocol
 - `docs/EXPORT_SCHEMA.md` — versioned export contract
-- `CHANGELOG.md` — release history and remaining work
+- `CHANGELOG.md` — release history
 - `CONTRIBUTING.md` — architecture, privacy, and evidence boundaries
 
 ## What is deliberately not being built
