@@ -4,33 +4,51 @@
 
 Harness Card is used after a human–AI conversation has already begun to fail. It helps the user choose the lightest repair that can restore the conversation without discarding useful state.
 
-- **Direct Correction** fixes a tiny, obvious mistake.
+- **Direct Correction** fixes a small, obvious mistake.
 - **Mini Harness** restores an output boundary such as “code only” or “no explanation.”
-- **Full Harness** reconstructs shared reality when constraints, trust, continuity, or project state have broken.
+- **Full Harness** reconstructs shared reality when trust, continuity, handoff state, repeated failure, or layered constraints have broken.
 
 The cargo is Human Signal. The card exists to keep it from breaking during a handoff.
-
-## Run it
-
-The app loads its public Dataset A records from JSON, so serve the repository instead of opening `index.html` through `file://`:
-
-```bash
-npm run serve
-```
-
-Then open `http://localhost:8080`. The same static files are compatible with GitHub Pages.
-
-No account, backend, API key, analytics, telemetry, or cloud transcript storage is required.
 
 ## Current release
 
 **3.5.2 — Public Credibility and Reliability Pass**
 
-The repository remains static HTML, CSS, and JavaScript. That keeps it inspectable, portable, inexpensive, dependency-light, and low in attack surface.
+Post-release maintenance has retuned the deterministic recommendation ladder and strengthened repository validation without changing the static, local-first architecture. See [`CHANGELOG.md`](CHANGELOG.md).
 
-## What the application now does
+## Run it
 
-- Analyzes a failure window locally and recommends Direct, Mini, or Full.
+The app loads its public Dataset A records from JSON, so serve the repository instead of opening `index.html` through `file://`.
+
+### Windows
+
+From the repository folder, use either:
+
+```powershell
+py -m http.server 8080
+```
+
+or, when `python` is available:
+
+```powershell
+python -m http.server 8080
+```
+
+### macOS or Linux
+
+```bash
+python3 -m http.server 8080
+```
+
+Then open `http://localhost:8080`.
+
+The same static files are compatible with GitHub Pages, Netlify, and Cloudflare Pages.
+
+No account, backend, API key, analytics, telemetry, or cloud transcript storage is required.
+
+## What the application does
+
+- Analyzes a sanitized failure window locally and recommends Direct, Mini, or Full.
 - Displays the heuristic’s reasons, detected signals, token estimate, and confidence.
 - Generates copyable repair cards manually or from the analyzer.
 - Keeps the thirty seeded Dataset A records separate from working records.
@@ -42,7 +60,7 @@ The repository remains static HTML, CSS, and JavaScript. That keeps it inspectab
 
 The analyzer is a deterministic heuristic, **not AI diagnosis**. Human judgment remains final.
 
-## What this repository is
+## Repository role
 
 This repository has four bounded roles:
 
@@ -94,13 +112,14 @@ npm run validate
 
 Validation checks:
 
-- Direct/Mini/Full parser regression cases;
+- Direct, Mini, and Full parser regression cases;
 - JavaScript syntax;
-- release and schema boundaries;
+- synchronized release metadata;
 - required public files and application references;
-- seed-data shape and unique IDs;
-- preservation of the thirty-record Dataset A boundary;
-- import-size, import-count, storage, and evidence-separation safeguards.
+- duplicate HTML IDs and broken label targets;
+- seed-data shape, count, and unique IDs;
+- import-size, import-count, storage, and evidence-separation safeguards;
+- absence of unexpected application network calls.
 
 ## Main files
 
@@ -112,10 +131,10 @@ Validation checks:
 - `data/seed-data.json` and `.csv` — Dataset A records
 - `docs/DATASET_B_PROTOCOL.md` — real-world recovery protocol
 - `docs/EXPORT_SCHEMA.md` — versioned export contract
-- `CHANGELOG.md` — release history
+- `CHANGELOG.md` — release and maintenance history
 - `CONTRIBUTING.md` — architecture, privacy, and evidence boundaries
 
-## What is deliberately not being built
+## Deliberately out of scope
 
 No accounts, cloud storage, payments, subscriptions, external AI APIs, transcript collection, analytics, telemetry, tracking, framework rewrite, browser extension, enterprise dashboard, mobile app, or multi-agent orchestration.
 
