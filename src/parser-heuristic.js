@@ -38,11 +38,11 @@
       failure = 'Output-format violation';
       confidence = 'high';
       reasons.push('Short output-boundary failure; Direct avoids adding more formatting noise.');
-    } else if (signals.trust && !signals.restart && !signals.layered && !signals.repeatedFailure) {
-      mode = 'mini';
-      failure = 'Evidence-boundary failure';
+    } else if (signals.trust) {
+      mode = 'full';
+      failure = 'Trust or evidence-boundary failure';
       confidence = 'high';
-      reasons.push('Source confusion needs an explicit closed-world evidence lock, not a full reconstruction.');
+      reasons.push('Source, assumption, or certainty confusion requires explicit trust reconstruction and human review.');
     } else if (signals.restart || signals.layered || signals.repeatedFailure) {
       mode = 'full';
       failure = signals.restart ? 'Restart loop' : 'Continuity failure';
@@ -53,9 +53,9 @@
       failure = 'Lost constraint';
       confidence = 'medium';
       reasons.push('A short visible constraint miss should be corrected directly before escalating.');
-    } else if ((signals.outputDiscipline || signals.drift || signals.trust) && tokenEstimate < 1800) {
+    } else if ((signals.outputDiscipline || signals.drift) && tokenEstimate < 1800) {
       mode = 'mini';
-      failure = signals.trust ? 'Evidence-boundary failure' : (signals.outputDiscipline ? 'Output-format violation' : 'Lost constraints');
+      failure = signals.outputDiscipline ? 'Output-format violation' : 'Lost constraints';
       confidence = 'medium';
       reasons.push('Several active boundaries need restating, but the whole conversation does not need rebuilding.');
     } else if (tokenEstimate >= 1800) {
