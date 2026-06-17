@@ -11,7 +11,7 @@
     restart: /(start(?:ed)? over|restart|from scratch|rediscover|summarize the whole project|continue.*where we left off)/i,
     drift: /(drift|lost the plot|ignored|forgot|constraints|wrong problem|missed the point)/i,
     layered: /(handoff|current state|project state|multiple constraints|must not change|preserve continuity|shared reality)/i,
-    repeatedFailure: /(again|keeps? doing|repeated|still ignored|second time|third time|already corrected)/i
+    repeatedFailure: /(keeps? doing|repeated|still ignored|second time|third time|already corrected|corrected this twice)/i
   };
 
   function estimateTokens(text) {
@@ -33,7 +33,7 @@
     let failure = 'Visible correction';
     let confidence = 'medium';
 
-    if (signals.outputDiscipline && tokenEstimate < 700 && !signals.trust && !signals.restart && !signals.layered && !signals.repeatedFailure) {
+    if (signals.outputDiscipline && tokenEstimate < 250 && !signals.trust && !signals.restart && !signals.layered && !signals.repeatedFailure) {
       mode = 'direct';
       failure = 'Output-format violation';
       confidence = 'high';
