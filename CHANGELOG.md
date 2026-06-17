@@ -4,7 +4,22 @@ All notable changes to Harness Card V3 are documented here.
 
 ## [Unreleased]
 
-No committed release scope yet. Future work should be driven by Dataset B evidence and verified user failures rather than speculative expansion.
+### Changed
+- Retuned the deterministic repair heuristic to begin with Direct, use Mini for moderate boundary failures, and reserve Full for trust, restart, layered continuity, handoff, repeated failures, or very long context.
+- Expanded repair-signal detection for exact-format requests, evidence boundaries, known/unknown distinctions, and repeated failed corrections.
+- Simplified the GitHub Actions workflow so validation runs on `main`, pull requests to `main`, and manual dispatch.
+- Strengthened repository validation to detect version drift, duplicate HTML IDs, broken label targets, stale public copy, seed-data boundary violations, and unexpected application network behavior.
+
+### Fixed
+- Corrected the Direct threshold so moderate output-contract failures do not get misclassified as Direct.
+- Removed a stale validation-workflow branch reference.
+
+### Preserved
+- Static HTML, CSS, and JavaScript architecture.
+- Local-first browser storage and explicit import/export controls.
+- No backend, accounts, external AI API, analytics, telemetry, or automatic transcript upload.
+- Dataset A remains a distinct thirty-record exploratory reference dataset.
+- Human review remains authoritative.
 
 ## [3.5.2] - 2026-06-16
 
