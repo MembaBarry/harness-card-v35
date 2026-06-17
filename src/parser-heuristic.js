@@ -1,6 +1,3 @@
-/* Harness Card V3.5.2 parser heuristic
- * Local-only, deterministic, and advisory. This is not AI diagnosis.
- */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -9,11 +6,12 @@
   'use strict';
 
   const SIGNALS = {
-    outputDiscipline: /(code only|only the code|no explanation|no intro|no outro|just answer|one sentence|wrong format|too much filler|overexplain|overexplaining)/i,
-    trust: /(hallucinat|unsupported|fake certainty|not sure|are you sure|source|assumption|canon|invent|unverified)/i,
+    outputDiscipline: /(code only|only the code|no explanation|no intro|no outro|just answer|one sentence|exactly \d+|bullet points?|wrong format|too much filler|overexplain|overexplaining)/i,
+    trust: /(hallucinat|unsupported|fake certainty|not sure|source|assumption|canon|invent|unverified|evidence boundary|known facts?|unknowns?)/i,
     restart: /(start(?:ed)? over|restart|from scratch|rediscover|summarize the whole project|continue.*where we left off)/i,
-    drift: /(drift|lost the plot|ignored|forgot|constraints|loop|wrong problem|missed the point)/i,
-    layered: /(handoff|current state|project state|multiple constraints|must not change|preserve continuity)/i
+    drift: /(drift|lost the plot|ignored|forgot|constraints|wrong problem|missed the point)/i,
+    layered: /(handoff|current state|project state|multiple constraints|must not change|preserve continuity|shared reality)/i,
+    repeatedFailure: /(again|keeps? doing|repeated|still ignored|second time|third time|already corrected)/i
   };
 
   function estimateTokens(text) {
@@ -31,38 +29,42 @@
     const tokenEstimate = estimateTokens(text);
     const signals = detectSignals(text);
     const reasons = [];
-    let mode = 'full';
-    let failure = 'Drift';
-    let confidence = 'low';
+    let mode = 'direct';
+    let failure = 'Visible correction';
+    let confidence = 'medium';
 
-    // Direct must be checked before Mini because its token range is a subset.
-    if (signals.outputDiscipline && tokenEstimate < 600 && !signals.trust && !signals.restart && !signals.drift && !signals.layered) {
+    if (signals.outputDiscipline && tokenEstimate < 700 && !signals.trust && !signals.restart && !signals.layered && !signals.repeatedFailure) {
       mode = 'direct';
       failure = 'Output-format violation';
       confidence = 'high';
-      reasons.push('Short, obvious output-boundary failure with no layered context or trust signal.');
-    } else if (signals.outputDiscipline && tokenEstimate < 1800 && !signals.trust && !signals.restart && !signals.layered) {
+      reasons.push('Short output-boundary failure; Direct avoids adding more formatting noise.');
+    } else if (signals.trust && !signals.restart && !signals.layered && !signals.repeatedFailure) {
       mode = 'mini';
-      failure = 'Output-format violation';
-      confidence = signals.drift ? 'medium' : 'high';
-      reasons.push('Output-discipline failure needs explicit format restoration but not full context reconstruction.');
-    } else if (signals.trust) {
-      mode = 'full';
-      failure = 'Fake certainty';
+      failure = 'Evidence-boundary failure';
       confidence = 'high';
-      reasons.push('Trust, source, assumption, or unsupported-certainty signal detected.');
-    } else if (signals.restart) {
+      reasons.push('Source confusion needs an explicit closed-world evidence lock, not a full reconstruction.');
+    } else if (signals.restart || signals.layered || signals.repeatedFailure) {
       mode = 'full';
-      failure = 'Restart loop';
+      failure = signals.restart ? 'Restart loop' : 'Continuity failure';
       confidence = 'high';
-      reasons.push('Restart or continuity-loss signal detected.');
-    } else if (signals.drift || signals.layered || tokenEstimate >= 1800) {
+      reasons.push('Restart, handoff, layered-state, or repeated-correction failure needs shared-reality reconstruction.');
+    } else if (signals.drift && tokenEstimate < 900) {
+      mode = 'direct';
+      failure = 'Lost constraint';
+      confidence = 'medium';
+      reasons.push('A short visible constraint miss should be corrected directly before escalating.');
+    } else if ((signals.outputDiscipline || signals.drift || signals.trust) && tokenEstimate < 1800) {
+      mode = 'mini';
+      failure = signals.trust ? 'Evidence-boundary failure' : (signals.outputDiscipline ? 'Output-format violation' : 'Lost constraints');
+      confidence = 'medium';
+      reasons.push('Several active boundaries need restating, but the whole conversation does not need rebuilding.');
+    } else if (tokenEstimate >= 1800) {
       mode = 'full';
-      failure = signals.drift ? 'Lost constraints' : 'Drift';
-      confidence = signals.drift || signals.layered ? 'medium' : 'low';
-      reasons.push('Layered context, lost-constraint, continuity, or long-input signal detected.');
+      failure = 'Layered context failure';
+      confidence = 'low';
+      reasons.push('The failure window is long enough that shared state may need reconstruction.');
     } else {
-      reasons.push('No decisive light-repair pattern detected; Full is the conservative fallback.');
+      reasons.push('No escalation signal detected; start with Direct and move up only if the repair fails.');
     }
 
     return {
@@ -72,7 +74,7 @@
       confidence,
       reasons,
       signals,
-      disclaimer: 'Heuristic recommendation only. Review the conversation and choose the lightest repair that can actually solve the failure.'
+      disclaimer: 'Heuristic recommendation only. Start with the lightest repair that can solve the failure, and escalate only if it does not hold.'
     };
   }
 
