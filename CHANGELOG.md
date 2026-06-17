@@ -8,7 +8,7 @@ All notable changes to Harness Card V3 are documented here.
 - Retuned the deterministic repair heuristic to begin with Direct, use Mini for moderate boundary failures, and reserve Full for trust, restart, layered continuity, handoff, repeated failures, or very long context.
 - Expanded repair-signal detection for exact-format requests, evidence boundaries, known/unknown distinctions, and repeated failed corrections.
 - Simplified the GitHub Actions workflow so validation runs on `main`, pull requests to `main`, and manual dispatch.
-- Strengthened repository validation to detect version drift, duplicate HTML IDs, broken label targets, stale public copy, seed-data boundary violations, and unexpected application network behavior.
+- Clarified Windows, macOS, and Linux local startup instructions in the README.
 
 ### Fixed
 - Corrected the Direct threshold so moderate output-contract failures do not get misclassified as Direct.
