@@ -27,34 +27,60 @@ for (const file of required) {
 
 for (const file of ['app.js', 'src/parser-heuristic.js']) {
   const source = fs.readFileSync(path.join(root, file), 'utf8');
-  new vm.Script(source, {filename:file});
+  new vm.Script(source, {filename: file});
 }
 
 const packageJson = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
-if (packageJson.version !== '3.5.2') throw new Error(`Expected package version 3.5.2; found ${packageJson.version}`);
+const version = packageJson.version;
+if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error(`Invalid package version: ${version}`);
 
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const requiredReferences = ['styles.css', 'src/parser-heuristic.js', 'app.js', 'Conversation repair analyzer', 'Local storage and import/export'];
-for (const reference of requiredReferences) {
+const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
+const changelog = fs.readFileSync(path.join(root, 'CHANGELOG.md'), 'utf8');
+
+for (const reference of ['styles.css', 'src/parser-heuristic.js', 'app.js', 'Conversation repair analyzer', 'Local storage and import/export']) {
   if (!index.includes(reference)) throw new Error(`index.html missing required reference: ${reference}`);
 }
-if (/Public name still under review|Easy upload package note/i.test(index)) throw new Error('Stale public credibility copy remains in index.html.');
+
+for (const surface of [index, app, readme, changelog]) {
+  if (!surface.includes(version)) throw new Error(`Release version ${version} is not synchronized across public surfaces.`);
+}
+
+const ids = [...index.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
+const duplicateIds = ids.filter((id, position) => ids.indexOf(id) !== position);
+if (duplicateIds.length) throw new Error(`Duplicate HTML id values: ${[...new Set(duplicateIds)].join(', ')}`);
+
+for (const labelTarget of [...index.matchAll(/<label\s+for="([^"]+)"/g)].map(match => match[1])) {
+  if (!ids.includes(labelTarget)) throw new Error(`Label references missing id: ${labelTarget}`);
+}
+
+if (/Public name still under review|Easy upload package note/i.test(index + readme)) {
+  throw new Error('Stale public credibility copy remains in the application or README.');
+}
 
 const seed = JSON.parse(fs.readFileSync(path.join(root, 'data/seed-data.json'), 'utf8'));
 const records = Array.isArray(seed) ? seed : seed.records;
-if (!Array.isArray(records) || records.length !== 30) throw new Error('Dataset A must remain a distinct 30-record seeded dataset.');
+if (!Array.isArray(records) || records.length !== 30) {
+  throw new Error('Dataset A must remain a distinct 30-record seeded dataset.');
+}
 
-const ids = new Set();
+const seedIds = new Set();
 for (const record of records) {
   if (!record || typeof record !== 'object') throw new Error('Seed record must be an object.');
   if (!record.id) throw new Error('Seed record missing id.');
-  if (ids.has(record.id)) throw new Error(`Duplicate seed id: ${record.id}`);
-  ids.add(record.id);
+  if (seedIds.has(record.id)) throw new Error(`Duplicate seed id: ${record.id}`);
+  seedIds.add(record.id);
 }
 
-const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 for (const boundary of ['MAX_IMPORT_BYTES', 'MAX_IMPORT_RECORDS', 'seeded-exploratory', 'Merge import', 'Clear saved browser data']) {
-  if (!app.includes(boundary) && !index.includes(boundary)) throw new Error(`Missing required reliability boundary: ${boundary}`);
+  if (!app.includes(boundary) && !index.includes(boundary)) {
+    throw new Error(`Missing required reliability boundary: ${boundary}`);
+  }
 }
 
-console.log('Repository validation passed.');
+for (const forbidden of ['fetch("http', "fetch('http", 'XMLHttpRequest(', 'navigator.sendBeacon(', 'WebSocket(']) {
+  if (app.includes(forbidden)) throw new Error(`Unexpected network behavior in app.js: ${forbidden}`);
+}
+
+console.log(`Repository validation passed for Harness Card v${version}.`);
