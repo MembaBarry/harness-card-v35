@@ -2,9 +2,10 @@ name: Validate static app
 
 on:
   push:
-    branches: [main, v3.5.2-credibility-reliability-pass]
+    branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -12,6 +13,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -22,4 +24,4 @@ jobs:
       - name: Run parser regression tests
         run: npm test
       - name: Validate repository contract
-        run: npm run validate
+        run: node scripts/validate-repository.js
