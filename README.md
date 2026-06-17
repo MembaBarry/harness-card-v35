@@ -14,7 +14,7 @@ The cargo is Human Signal. The card exists to keep it from breaking during a han
 
 **3.5.2 — Public Credibility and Reliability Pass**
 
-Post-release maintenance has retuned the deterministic recommendation ladder and strengthened repository validation without changing the static, local-first architecture. See [`CHANGELOG.md`](CHANGELOG.md).
+Post-release maintenance has retuned the deterministic recommendation ladder and clarified repository operation without changing the static, local-first architecture. See [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Run it
 
@@ -114,12 +114,9 @@ Validation checks:
 
 - Direct, Mini, and Full parser regression cases;
 - JavaScript syntax;
-- synchronized release metadata;
 - required public files and application references;
-- duplicate HTML IDs and broken label targets;
 - seed-data shape, count, and unique IDs;
-- import-size, import-count, storage, and evidence-separation safeguards;
-- absence of unexpected application network calls.
+- import-size, import-count, storage, and evidence-separation safeguards.
 
 ## Main files
 
